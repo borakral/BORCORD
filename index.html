@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BORCORD</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #101116;
+    --panel: #17181f;
+    --panel2: #202127;
+    --panel3: #292b34;
+    --purple: #765cff;
+    --blue: #4d8cff;
+    --text: #eeeeF2;
+    --muted: #9295a1;
+    --green: #4bd784;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+button, input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* ANA EKRAN */
+
+#app {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 74px 245px 1fr 230px;
+}
+
+/* SUNUCULAR */
+
+.servers {
+    background: #0d0e13;
+    padding: 12px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.server {
+    width: 50px;
+    height: 50px;
+    border: 0;
+    border-radius: 50%;
+    background: #272933;
+    color: white;
+    font-size: 20px;
+    transition: .2s;
+    position: relative;
+}
+
+.server:hover,
+.server.active {
+    border-radius: 16px;
+    background: var(--purple);
+}
+
+.server.active::before {
+    content: "";
+    position: absolute;
+    left: -12px;
+    top: 10px;
+    width: 4px;
+    height: 30px;
+    border-radius: 4px;
+    background: white;
+}
+
+.logo {
+    background: linear-gradient(135deg, var(--purple), var(--blue));
+    font-size: 25px;
+    font-weight: 900;
+}
+
+.add-server {
+    color: #57df8d;
+}
+
+.add-server:hover {
+    background: #2fa864;
+}
+
+/* KANALLAR */
+
+.channels {
+    min-width: 0;
+    background: var(--panel);
+    display: flex;
+    flex-direction: column;
+}
+
+.server-header {
+    height: 55px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #0e0f13;
+    font-weight: 800;
+}
+
+.category {
+    color: #818490;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 20px 12px 6px;
+}
+
+.channel {
+    border: 0;
+    background: transparent;
+    color: #a4a6b0;
+    margin: 1px 8px;
+    padding: 9px 10px;
+    border-radius: 6px;
+    text-align: left;
+}
+
+.channel:hover,
+.channel.active {
+    background: #292b34;
+    color: white;
+}
+
+.profile {
+    margin-top: auto;
+    height: 62px;
+    background: #101116;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    gap: 8px;
+}
+
+.avatar {
+    width: 39px;
+    height: 39px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, #7d61ff, #448aff);
+    font-weight: 900;
+    flex-shrink: 0;
+}
+
+.profile-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.profile-text strong {
+    display: block;
+    font-size: 13px;
+}
+
+.online {
+    color: var(--green);
+    font-size: 10px;
+}
+
+.settings {
+    border: 0;
+    background: transparent;
+    color: #aaa;
+    font-size: 18px;
+}
+
+/* CHAT */
+
+.chat {
+    min-width: 0;
+    background: var(--panel2);
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header {
+    height: 55px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #121318;
+    padding: 0 17px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.channel-name {
+    font-weight: 800;
+}
+
+.channel-description {
+    margin-left: 15px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.header-icons {
+    display: flex;
+    gap: 17px;
+    color: #b8bac2;
+}
+
+/* MESAJLAR */
+
+.messages {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 15px;
+}
+
+.welcome {
+    padding: 65px 20px 30px;
+}
+
+.welcome-circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: #353741;
+    font-size: 38px;
+    font-weight: 900;
+}
+
+.welcome h1 {
+    margin-bottom: 7px;
+}
+
+.welcome p {
+    color: var(--muted);
+}
+
+.message {
+    display: flex;
+    gap: 12px;
+    padding: 9px 20px;
+}
+
+.message:hover {
+    background: #1c1d23;
+}
+
+.message-avatar {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-weight: 900;
+    background: linear-gradient(135deg, #795cff, #4287ff);
+}
+
+.message-avatar.emir {
+    background: linear-gradient(135deg, #ffb14d, #ff5757);
+}
+
+.message-top {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.message-top span {
+    color: #777a85;
+    font-size: 11px;
+}
+
+.message-text {
+    margin-top: 4px;
+    line-height: 1.4;
+    color: #dddfe5;
+}
+
+.mod {
+    color: #5aa8ff;
+}
+
+/* MESAJ GİRİŞİ */
+
+.composer {
+    margin: 0 16px 20px;
+    min-height: 52px;
+    border-radius: 9px;
+    background: #30323c;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.composer button {
+    border: 0;
+    background: transparent;
+    color: #b8bac3;
+    font-weight: 800;
+    padding: 10px;
+}
+
+.composer input {
+    flex: 1;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: white;
+    padding: 15px 8px;
+}
+
+.composer input::placeholder {
+    color: #838691;
+}
+
+/* ÜYELER */
+
+.members {
+    background: var(--panel);
+    padding: 18px 10px;
+}
+
+.members-title {
+    color: #818490;
+    font-size: 11px;
+    font-weight: 800;
+    margin: 5px 8px 10px;
+}
+
+.member {
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    border-radius: 7px;
+}
+
+.member:hover {
+    background: #272932;
+}
+
+.member-info strong,
+.member-info span {
+    display: block;
+}
+
+.member-info span {
+    font-size: 11px;
+    color: #858893;
+    margin-top: 2px;
+}
+
+/* MODAL */
+
+.modal-bg {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #000a;
+    z-index: 50;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal {
+    width: min(420px, 90%);
+    background: #202127;
+    border: 1px solid #3b3d48;
+    border-radius: 14px;
+    padding: 25px;
+    box-shadow: 0 25px 80px #000;
+}
+
+.modal h2 {
+    margin-top: 0;
+}
+
+.modal input {
+    width: 100%;
+    background: #111218;
+    border: 1px solid #3a3c46;
+    color: white;
+    padding: 13px;
+    border-radius: 7px;
+    outline: none;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 18px;
+}
+
+.modal-actions button {
+    border: 0;
+    border-radius: 7px;
+    padding: 10px 15px;
+    color: white;
+}
+
+.cancel {
+    background: #3a3c45;
+}
+
+.create {
+    background: var(--purple);
+}
+
+/* MOBİL */
+
+@media (max-width: 900px) {
+    #app {
+        grid-template-columns: 70px 220px 1fr;
+    }
+
+    .members {
+        display: none;
+    }
+}
+
+@media (max-width: 650px) {
+    #app {
+        grid-template-columns: 62px 1fr;
+    }
+
+    .channels {
+        display: none;
+    }
+
+    .channel-description {
+        display: none;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="app">
+
+    <!-- SUNUCULAR -->
+    <aside class="servers">
+
+        <button class="server logo active">B</button>
+
+        <button class="server" title="Oyun">
+            🎮
+        </button>
+
+        <button class="server" title="Demo Laris">
+            DL
+        </button>
+
+        <button
+            class="server add-server"
+            id="addServer"
+            title="Sunucu ekle"
+        >
+            +
+        </button>
+
+    </aside>
+
+
+    <!-- KANALLAR -->
+    <aside class="channels">
+
+        <div class="server-header">
+            <span id="serverName">
+                BORCORD
+            </span>
+
+            <span>⌄</span>
+        </div>
+
+        <div class="category">
+            METİN KANALLARI
+        </div>
+
+        <button class="channel active" data-channel="genel">
+            # genel
+        </button>
+
+        <button class="channel" data-channel="oyun">
+            # oyun
+        </button>
+
+        <button class="channel" data-channel="sohbet">
+            # sohbet
+        </button>
+
+        <button class="channel" data-channel="medya">
+            # medya
+        </button>
+
+
+        <div class="category">
+            SES KANALLARI
+        </div>
+
+        <button class="channel">
+            🔊 Genel
+        </button>
+
+        <button class="channel">
+            🔊 Oyun Odası
+        </button>
+
+
+        <div class="profile">
+
+            <div class="avatar">
+                B
+            </div>
+
+            <div class="profile-text">
+                <strong>Bora</strong>
+                <span class="online">
+                    ● Çevrimiçi
+                </span>
+            </div>
+
+            <button class="settings">
+                ⚙
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- CHAT -->
+    <main class="chat">
+
+        <header class="chat-header">
+
+            <div>
+                <span
+                    class="channel-name"
+                    id="currentChannel"
+                >
+                    # genel
+                </span>
+
+                <span class="channel-description">
+                    BORCORD genel sohbet
+                </span>
+            </div>
+
+            <div class="header-icons">
+                <span>🔔</span>
+                <span>👥</span>
+                <span>🔍</span>
+            </div>
+
+        </header>
+
+
+        <section
+            class="messages"
+            id="messages"
+        >
+
+            <div class="welcome">
+
+                <div class="welcome-circle">
+                    #
+                </div>
+
+                <h1 id="welcomeTitle">
+                    # genel kanalına hoş geldin!
+                </h1>
+
+                <p>
+                    BORCORD macerası burada başlıyor.
+                </p>
+
+            </div>
+
+
+            <div class="message">
+
+                <div class="message-avatar">
+                    B
+                </div>
+
+                <div>
+
+                    <div class="message-top">
+                        <strong>Bora</strong>
+                        <span>Bugün</span>
+                    </div>
+
+                    <div class="message-text">
+                        BORCORD açıldı 🔥
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="message">
+
+                <div class="message-avatar emir">
+                    E
+                </div>
+
+                <div>
+
+                    <div class="message-top">
+
+                        <strong class="mod">
+                            Emir 🛡️
+                        </strong>
+
+                        <span>
+                            Bugün
+                        </span>
+
+                    </div>
+
+                    <div class="message-text">
+                        Selam 😎
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <div class="composer">
+
+            <button title="Dosya ekle">
+                ＋
+            </button>
+
+            <input
+                id="messageInput"
+                type="text"
+                autocomplete="off"
+                placeholder="#genel kanalına mesaj gönder"
+            >
+
+            <button>
+                GIF
+            </button>
+
+            <button
+                id="emojiButton"
+                title="Emoji"
+            >
+                😎
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <!-- ÜYELER -->
+    <aside class="members">
+
+        <div class="members-title">
+            ÇEVRİMİÇİ — 2
+        </div>
+
+
+        <div class="member">
+
+            <div class="avatar">
+                B
+            </div>
+
+            <div class="member-info">
+                <strong>Bora 👑</strong>
+                <span>Kurucu</span>
+            </div>
+
+        </div>
+
+
+        <div class="member">
+
+            <div class="message-avatar emir">
+                E
+            </div>
+
+            <div class="member-info">
+                <strong class="mod">
+                    Emir
+                </strong>
+
+                <span>
+                    Moderatör 🛡️
+                </span>
+            </div>
+
+        </div>
+
+    </aside>
+
+</div>
+
+
+<!-- SUNUCU OLUŞTURMA -->
+
+<div
+    class="modal-bg"
+    id="serverModal"
+>
+
+    <div class="modal">
+
+        <h2>
+            Sunucunu oluştur 🚀
+        </h2>
+
+        <p>
+            Yeni BORCORD sunucuna bir isim ver.
+        </p>
+
+        <input
+            id="newServerName"
+            placeholder="Örn: Minecraft Ekibi"
+            maxlength="30"
+        >
+
+        <div class="modal-actions">
+
+            <button
+                class="cancel"
+                id="cancelServer"
+            >
+                İptal
+            </button>
+
+            <button
+                class="create"
+                id="createServer"
+            >
+                Oluştur
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* BORCORD v0.1 */
+
+const input =
+    document.getElementById("messageInput");
+
+const messages =
+    document.getElementById("messages");
+
+const currentChannel =
+    document.getElementById("currentChannel");
+
+const welcomeTitle =
+    document.getElementById("welcomeTitle");
+
+const channelButtons =
+    document.querySelectorAll(
+        ".channel[data-channel]"
+    );
+
+
+/* MESAJ GÖNDER */
+
+input.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key !== "Enter") {
+            return;
+        }
+
+        const text =
+            input.value.trim();
+
+        if (!text) {
+            return;
+        }
+
+        addMessage(
+            "Bora",
+            text,
+            false
+        );
+
+        input.value = "";
+
+    }
+);
+
+
+function addMessage(
+    username,
+    text,
+    moderator
+) {
+
+    const message =
+        document.createElement("div");
+
+    message.className =
+        "message";
+
+
+    const avatar =
+        username
+            .charAt(0)
+            .toUpperCase();
+
+
+    const time =
+        new Date()
+            .toLocaleTimeString(
+                "tr-TR",
+                {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }
+            );
+
+
+    message.innerHTML = `
+
+        <div
+            class="message-avatar
+            ${moderator ? "emir" : ""}"
+        >
+            ${avatar}
+        </div>
+
+        <div>
+
+            <div class="message-top">
+
+                <strong
+                    class="${moderator ? "mod" : ""}"
+                >
+                    ${escapeHTML(username)}
+                </strong>
+
+                <span>
+                    ${time}
+                </span>
+
+            </div>
+
+            <div class="message-text">
+                ${escapeHTML(text)}
+            </div>
+
+        </div>
+
+    `;
+
+
+    messages.appendChild(message);
+
+
+    messages.scrollTop =
+        messages.scrollHeight;
+
+}
+
+
+/* HTML GÜVENLİĞİ */
+
+function escapeHTML(text) {
+
+    const element =
+        document.createElement("div");
+
+    element.textContent =
+        text;
+
+    return element.innerHTML;
+
+}
+
+
+/* KANAL DEĞİŞTİR */
+
+channelButtons.forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            function() {
+
+                channelButtons.forEach(
+                    b =>
+                        b.classList.remove(
+                            "active"
+                        )
+                );
+
+
+                button.classList.add(
+                    "active"
+                );
+
+
+                const channel =
+                    button.dataset.channel;
+
+
+                currentChannel.textContent =
+                    "# " + channel;
+
+
+                welcomeTitle.textContent =
+                    "# " +
+                    channel +
+                    " kanalına hoş geldin!";
+
+
+                input.placeholder =
+                    "#" +
+                    channel +
+                    " kanalına mesaj gönder";
+
+            }
+        );
+
+    }
+);
+
+
+/* EMOJI */
+
+document
+    .getElementById("emojiButton")
+    .addEventListener(
+        "click",
+        function() {
+
+            input.value += " 😎";
+
+            input.focus();
+
+        }
+    );
+
+
+/* SUNUCU OLUŞTURMA */
+
+const serverModal =
+    document.getElementById(
+        "serverModal"
+    );
+
+const newServerName =
+    document.getElementById(
+        "newServerName"
+    );
+
+
+document
+    .getElementById("addServer")
+    .addEventListener(
+        "click",
+        function() {
+
+            serverModal.style.display =
+                "flex";
+
+            newServerName.focus();
+
+        }
+    );
+
+
+document
+    .getElementById("cancelServer")
+    .addEventListener(
+        "click",
+        function() {
+
+            serverModal.style.display =
+                "none";
+
+        }
+    );
+
+
+document
+    .getElementById("createServer")
+    .addEventListener(
+        "click",
+        createServer
+    );
+
+
+function createServer() {
+
+    const name =
+        newServerName.value.trim();
+
+    if (!name) {
+        return;
+    }
+
+
+    const server =
+        document.createElement(
+            "button"
+        );
+
+
+    server.className =
+        "server";
+
+
+    server.textContent =
+        name.charAt(0).toUpperCase();
+
+
+    server.title =
+        name;
+
+
+    const addButton =
+        document.getElementById(
+            "addServer"
+        );
+
+
+    addButton.parentNode.insertBefore(
+        server,
+        addButton
+    );
+
+
+    server.addEventListener(
+        "click",
+        function() {
+
+            document
+                .querySelectorAll(
+                    ".server"
+                )
+                .forEach(
+                    item =>
+                        item.classList.remove(
+                            "active"
+                        )
+                );
+
+
+            server.classList.add(
+                "active"
+            );
+
+
+            document
+                .getElementById(
+                    "serverName"
+                )
+                .textContent =
+                    name;
+
+        }
+    );
+
+
+    newServerName.value = "";
+
+    serverModal.style.display =
+        "none";
+
+}
+
+
+/* MODAL DIŞINA BASINCA KAPAT */
+
+serverModal.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target ===
+            serverModal
+        ) {
+
+            serverModal.style.display =
+                "none";
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
