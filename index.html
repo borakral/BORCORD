@@ -4,7 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BORCORD</title>
-
+    
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#101116">
+<link rel="icon" href="./BORCORD.png">
+<link rel="apple-touch-icon" href="./BORCORD.png">
 <style>
 * {
     box-sizing: border-box;
@@ -68,6 +72,13 @@ button {
     font-size: 20px;
     transition: .2s;
     position: relative;
+}
+    .bc-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+    display: block;
 }
 
 .server:hover,
